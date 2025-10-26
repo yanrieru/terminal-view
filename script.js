@@ -1,4 +1,6 @@
 const terminal = document.getElementById("terminal");
+const terminalHeader = document.getElementById("terminal-header");
+const terminalBody = document.getElementById("terminal-body");
 let currentInput;
 
 // Fade-in saat halaman load
@@ -6,14 +8,14 @@ window.addEventListener("DOMContentLoaded", () => {
   terminal.classList.add("fade-in");
 });
 
-// Command list
+// ====== Commands List ======
 const commands = {
   help: () => {
     printLines([
       "help   : untuk apa?",
       "about  : informasi tentang diriku",
       "contact: hubungi saya",
-      "clear  : menghapus semua history di terminal",
+      "clear  : menghapus semua history di terminal (tanpa banner & welcome hilang)",
     ]);
   },
   about: () => {
@@ -34,24 +36,25 @@ const commands = {
     );
   },
   clear: () => {
-    terminal.innerHTML = "";
-    initTerminal();
+    // hanya hapus isi body, header tetap
+    terminalBody.innerHTML = "";
+    addNewInputLine();
   },
 };
 
-// Utility untuk print ke terminal
+// ====== Utility Print ======
 function printLine(html = "") {
   const line = document.createElement("div");
   line.className = "line fade in";
   line.innerHTML = html;
-  terminal.appendChild(line);
+  terminalBody.appendChild(line);
 }
 
 function printLines(lines = []) {
   lines.forEach((line) => printLine(line));
 }
 
-// Tambahkan input prompt baru
+// ====== Tambah Input Baru ======
 function addNewInputLine() {
   const line = document.createElement("div");
   line.className = "line fade in";
@@ -60,7 +63,7 @@ function addNewInputLine() {
     <input class="input" type="text" autofocus />
     <span class="cursor"></span>
   `;
-  terminal.appendChild(line);
+  terminalBody.appendChild(line);
 
   currentInput = line.querySelector("input");
   currentInput.focus();
@@ -69,14 +72,14 @@ function addNewInputLine() {
   terminal.scrollTop = terminal.scrollHeight;
 }
 
-// Handle command
+// ====== Handle Command ======
 function handleCommand(e) {
   if (e.key === "Enter") {
     const cmd = currentInput.value.trim();
     const userInput = document.createElement("div");
     userInput.className = "line";
     userInput.innerHTML = `<span class="prompt">guest@yanrieru-web:~$</span> ${cmd}`;
-    terminal.insertBefore(userInput, currentInput.parentElement);
+    terminalBody.insertBefore(userInput, currentInput.parentElement);
 
     currentInput.removeEventListener("keydown", handleCommand);
     currentInput.parentElement.remove();
@@ -91,15 +94,12 @@ function handleCommand(e) {
   }
 }
 
-// ====== ASCII typing banner ======
-function typeAsciiBanner(
-  text,
-  { font = "Standard", charDelay = 0, lineDelay = 5 } = {}
-) {
+// ====== ASCII Banner ======
+function typeAsciiBanner(text, { font = "Standard", charDelay = 0, lineDelay = 5 } = {}) {
   return new Promise((resolve) => {
     const pre = document.createElement("pre");
     pre.className = "ascii";
-    terminal.appendChild(pre);
+    terminalHeader.appendChild(pre);
 
     const render = () => {
       figlet.text(text, { font }, (err, data) => {
@@ -131,8 +131,8 @@ function typeAsciiBanner(
     };
 
     if (font !== "Standard") {
-      const url = "./fonts"; // sesuai folder kamu
-      figlet.loadFont(font, (err) => {
+      const url = `./fonts/${font}.flf`;
+      figlet.loadFont(font, url, (err) => {
         if (err) {
           console.error("Gagal load font, fallback ke Standard", err);
           font = "Standard";
@@ -145,24 +145,32 @@ function typeAsciiBanner(
   });
 }
 
-// Init terminal
+// ====== Init Terminal ======
 async function initTerminal() {
   await typeAsciiBanner("Aprilyan Candra Utama", {
     font: "BigMoney-ne",
     charDelay: 0,
-    lineDelay: 5,
+    lineDelay: 0.5,
   });
 
-  printLines([
+  // tampilkan teks intro di header
+  const introLines = [
     "",
     "Welcome to my terminal portfolio👋.",
     "Here you can get some information about me.",
     "<hr>",
     "Type 'help' to see the list of available commands.",
     "",
-  ]);
+  ];
+  introLines.forEach((line) => {
+    const div = document.createElement("div");
+    div.className = "line fade in";
+    div.innerHTML = line;
+    terminalHeader.appendChild(div);
+  });
+
   addNewInputLine();
 }
 
-// Jalankan sekali
+// Jalankan
 initTerminal();

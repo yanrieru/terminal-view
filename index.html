@@ -2,16 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terminal Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap" rel="stylesheet" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <div class="terminal" id="terminal"></div>
 
-    <!-- figlet.js -->
-    <script src="https://cdn.jsdelivr.net/gh/patorjk/figlet.js@master/lib/figlet.js"></script>
+  <body>
+    <div class="terminal" id="terminal">
+      <div id="terminal-header"></div>
+      <div id="terminal-body"></div>
+    </div>
+
+    <script src="./libs/finglet.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
