@@ -15,7 +15,7 @@ const commands = {
       "help   : untuk apa?",
       "about  : informasi tentang diriku",
       "contact: hubungi saya",
-      "clear  : menghapus semua history di terminal (tanpa banner & welcome hilang)",
+      "clear  : menghapus semua history di terminal",
     ]);
   },
   about: () => {
@@ -75,7 +75,7 @@ function addNewInputLine() {
 // ====== Handle Command ======
 function handleCommand(e) {
   if (e.key === "Enter") {
-    const cmd = currentInput.value.trim();
+    const cmd = currentInput.value.trim().toLowerCase();
     const userInput = document.createElement("div");
     userInput.className = "line";
     userInput.innerHTML = `<span class="prompt">guest@yanrieru-web:~$</span> ${cmd}`;

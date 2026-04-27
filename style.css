@@ -9,26 +9,36 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 hr {
   border: none;
-  border-top: 1px;
+  border-top: 1px solid #f5c6f5;
   margin: 10px 0;
 }
 
 .terminal {
+  display: flex;
+  flex-direction: column;
   background-color: transparent;
   padding: 2rem;
   width: 97%;
   max-width: 100rem;
   height: 95vh;
-  overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
   border-radius: 20px;
   box-sizing: border-box;
+}
+
+#terminal-header {
+  flex-shrink: 0;
+}
+
+#terminal-body {
+  flex: 1;
+  overflow-y: auto;
 }
 
 .terminal::-webkit-scrollbar {
